@@ -1,0 +1,65 @@
+version: '3.6'
+services:
+  mongodb1:
+    image: mongo:latest
+    container_name: mongodb1
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongod.conf:/etc/mongo/mongod.conf
+      - mongodb1:/data/db
+      - /home/mongo-keyfile:/etc/mongo/mongo-keyfile
+    # command: ["mongod", "--replSet", "rs0", "--port", "27017", "--bind_ip_all"]
+    # command: ["mongod", "--config", "/etc/mongo/mongod.conf"]
+    command: >
+      bash -c "
+      mongod --config /etc/mongo/mongod.conf &&
+      chmod 400 /keys/mongodb-key &&
+      chown 999:999 /keys/mongodb-key"
+
+  mongodb2:
+    image: mongo:latest
+    container_name: mongodb2
+    restart: always
+    ports:
+      - 27018:27017
+    volumes:
+      - ./mongod.conf:/etc/mongo/mongod.conf
+      - mongodb2:/data/db
+      - /home/mongo-keyfile:/etc/mongo/mongo-keyfile
+    # command: ["mongod", "--replSet", "rs0", "--port", "27017", "--bind_ip_all"]
+    # command: ["mongod", "--config", "/etc/mongo/mongod.conf"]
+    command: >
+      bash -c "
+      mongod --config /etc/mongo/mongod.conf &&
+      chmod 400 /keys/mongodb-key &&
+      chown 999:999 /keys/mongodb-key"
+
+  mongodb3:
+    image: mongo:latest
+    container_name: mongodb3
+    restart: always
+    ports:
+      - 27019:27017
+    volumes:
+      - ./mongod.conf:/etc/mongo/mongod.conf
+      - mongodb3:/data/db
+      - /home/mongo-keyfile:/etc/mongo/mongo-keyfile
+    # command: ["mongod", "--replSet", "rs0", "--port", "27017", "--bind_ip_all"]
+    # command: ["mongod", "--config", "/etc/mongo/mongod.conf"]
+    command: >
+      bash -c "
+      mongod --config /etc/mongo/mongod.conf &&
+      chmod 400 /keys/mongodb-key &&
+      chown 999:999 /keys/mongodb-key"
+
+volumes:
+  mongodb1:
+  mongodb2:
+  mongodb3:
+
+networks:
+  default:
+    external: true
+    name: mongo_net
